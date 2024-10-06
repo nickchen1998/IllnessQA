@@ -1,0 +1,9 @@
+.idea/
+venv/
+__pycache__/
+chromedriver.exe
+.pytest_cache/
+.env
+mongo/
+poetry.lock
+*.db
