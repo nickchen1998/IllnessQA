@@ -5,6 +5,7 @@ from datetime import datetime
 from selenium.webdriver import Chrome
 from selenium.webdriver.common.by import By
 from selenium.common.exceptions import NoSuchElementException
+from llms import get_refactor_answer, get_refactor_question
 
 browser = Chrome()
 browser.get('https://sp1.hso.mohw.gov.tw/doctor/Often_question/type_detail.php?q_type=排便問題&UrlClass=肝膽腸胃科')
@@ -44,7 +45,9 @@ for paragraph in browser.find_elements(By.CSS_SELECTOR, "ul.QAunit"):
         doctor_name=doctor_name,
         doctor_department=doctor_department,
         answer_time=answer_time,
-        view_amount=view_amount
+        view_amount=view_amount,
+        refactor_question=get_refactor_question(question),
+        refactor_answer=get_refactor_answer(answer)
     )
     pprint(data)
 
@@ -53,5 +56,6 @@ for paragraph in browser.find_elements(By.CSS_SELECTOR, "ul.QAunit"):
         next_page_element.click()
     except NoSuchElementException:
         break
+    break
 
 browser.quit()
