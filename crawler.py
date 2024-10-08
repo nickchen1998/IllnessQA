@@ -62,7 +62,6 @@ for paragraph in browser.find_elements(By.CSS_SELECTOR, "ul.QAunit"):
         next_page_element.click()
     except NoSuchElementException:
         break
-    break
 
 insert_datas(datas=datas)
 
