@@ -60,7 +60,8 @@ for paragraph in browser.find_elements(By.CSS_SELECTOR, "ul.QAunit"):
     try:
         next_page_element = browser.find_element(By.LINK_TEXT, "下一頁")
         next_page_element.click()
-    except NoSuchElementException:
+    except Exception as e:
+        print(e)
         break
 
 insert_datas(datas=datas)
