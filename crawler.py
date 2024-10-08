@@ -1,15 +1,16 @@
 import re
 import time
-from pprint import pprint
 from datetime import datetime
 from selenium.webdriver import Chrome
 from selenium.webdriver.common.by import By
 from selenium.common.exceptions import NoSuchElementException
-from llms import get_refactor_answer, get_refactor_question
+from llm import get_refactor_answer, get_refactor_question, get_content_embedding
+from mongo import insert_datas
 
 browser = Chrome()
 browser.get('https://sp1.hso.mohw.gov.tw/doctor/Often_question/type_detail.php?q_type=排便問題&UrlClass=肝膽腸胃科')
 
+datas = []
 category = "排便問題"
 doctor_department = "肝膽腸胃科"
 for paragraph in browser.find_elements(By.CSS_SELECTOR, "ul.QAunit"):
@@ -35,6 +36,10 @@ for paragraph in browser.find_elements(By.CSS_SELECTOR, "ul.QAunit"):
     match = re.search(r'(\d+)', view_info)
     view_amount = int(match.group(1)) if match else 0
 
+    refactor_question = get_refactor_question(question)
+    refactor_answer = get_refactor_answer(answer)
+    refactor_question_embedding = get_content_embedding(refactor_question)
+
     data = dict(
         category=category,
         subject=subject,
@@ -46,10 +51,11 @@ for paragraph in browser.find_elements(By.CSS_SELECTOR, "ul.QAunit"):
         doctor_department=doctor_department,
         answer_time=answer_time,
         view_amount=view_amount,
-        refactor_question=get_refactor_question(question),
-        refactor_answer=get_refactor_answer(answer)
+        refactor_question=refactor_question,
+        refactor_question_embeddings=refactor_question_embedding,
+        refactor_answer=refactor_answer
     )
-    pprint(data)
+    datas.append(data)
 
     try:
         next_page_element = browser.find_element(By.LINK_TEXT, "下一頁")
@@ -57,5 +63,7 @@ for paragraph in browser.find_elements(By.CSS_SELECTOR, "ul.QAunit"):
     except NoSuchElementException:
         break
     break
+
+insert_datas(datas=datas)
 
 browser.quit()

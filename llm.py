@@ -1,6 +1,7 @@
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_openai import ChatOpenAI
 from env_settings import EnvSettings
+from langchain_openai.embeddings import OpenAIEmbeddings
 
 
 def get_llm():
@@ -37,3 +38,12 @@ def get_refactor_question(paragraph: str):
     )
     chain = prompt | get_llm()
     return chain.invoke({"paragraph": paragraph}).content
+
+
+def get_content_embedding(content: str) -> list:
+    env_settings = EnvSettings()
+    embedding = OpenAIEmbeddings(
+        openai_api_key=env_settings.OPENAI_API_KEY,
+        model="text-embedding-3-small"
+    )
+    return embedding.embed_query(content)
