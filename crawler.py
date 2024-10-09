@@ -29,22 +29,38 @@ while True:
 
         asker_info = paragraph.find_element(By.CSS_SELECTOR, "li.asker").text
         match = re.search(r'／([男女])／.*?,(\d{4}/\d{2}/\d{2})', asker_info)
-        gender = match.group(1)
-        question_time = datetime.strptime(match.group(2), '%Y/%m/%d')
 
-        question = paragraph.find_element(By.CSS_SELECTOR, "li.ask").text
-
-        answer = paragraph.find_element(By.CSS_SELECTOR, "li.ans").text
+        try:
+            gender = match.group(1)
+        except Exception as e:
+            gender = None
+        try:
+            question_time = datetime.strptime(match.group(2), '%Y/%m/%d')
+        except Exception as e:
+            question_time = None
 
         doctor_info = paragraph.find_element(By.CSS_SELECTOR, "li.doctor").text
         match = re.search(r'／([\u4e00-\u9fa5]+),\s*(\d{4}/\d{2}/\d{2})', doctor_info)
-        doctor_name = match.group(1)
-        answer_time = datetime.strptime(match.group(2), '%Y/%m/%d')
+
+        try:
+            doctor_name = match.group(1)
+        except Exception as e:
+            doctor_name = None
+        try:
+            answer_time = datetime.strptime(match.group(2), '%Y/%m/%d')
+        except Exception as e:
+            answer_time = None
 
         view_info = paragraph.find_element(By.CSS_SELECTOR, "li.count").text
         match = re.search(r'(\d+)', view_info)
         view_amount = int(match.group(1)) if match else 0
 
+        try:
+            question = paragraph.find_element(By.CSS_SELECTOR, "li.ask").text
+            answer = paragraph.find_element(By.CSS_SELECTOR, "li.ans").text
+        except Exception as e:
+            print(e)
+            continue
         refactor_question = get_refactor_question(question)
         refactor_answer = get_refactor_answer(answer)
         refactor_question_embedding = get_content_embedding(refactor_question)
