@@ -8,10 +8,14 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
 browser = Chrome()
-browser.get('https://sp1.hso.mohw.gov.tw/doctor/Often_question/type_detail.php?q_type=排便問題&UrlClass=肝膽腸胃科')
+browser.get('https://sp1.hso.mohw.gov.tw/doctor/Often_question/type_detail.php?UrlClass=%B2%B4%AC%EC&q_like=0&q_type=%C3%C4%A4%F4')
 
-category = "排便問題"
-doctor_department = "肝膽腸胃科"
+# 排便問題、肝膽腸胃科 https://sp1.hso.mohw.gov.tw/doctor/Often_question/type_detail.php?q_type=%B1%C6%ABK%B0%DD%C3D&UrlClass=%A8x%C1x%B8z%ADG%AC%EC
+# 經痛、婦產科 https://sp1.hso.mohw.gov.tw/doctor/Often_question/type_detail.php?UrlClass=%B0%FC%B2%A3%AC%EC&q_like=0&q_type=%B8g%B5h
+# 藥水、眼科 https://sp1.hso.mohw.gov.tw/doctor/Often_question/type_detail.php?UrlClass=%B2%B4%AC%EC&q_like=0&q_type=%C3%C4%A4%F4
+
+category = "藥水"
+doctor_department = "眼科"
 i = 1
 while True:
     print(f"Page {i}")
