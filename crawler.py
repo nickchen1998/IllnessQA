@@ -96,6 +96,4 @@ while True:
         print(e)
         break
 
-
-
 browser.quit()
